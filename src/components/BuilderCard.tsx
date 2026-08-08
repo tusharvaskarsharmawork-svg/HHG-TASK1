@@ -45,7 +45,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, rotate: 0.5 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20 }}
-        className="relative flex flex-col sm:flex-row w-[calc(100vw-32px)] sm:w-full max-w-none sm:max-w-[960px] box-border bg-[#050807] rounded-3xl sm:rounded-[36px] overflow-hidden overflow-x-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 h-auto sm:max-h-[70vh]"
+        className="relative flex flex-col sm:flex-row w-[min(100%-24px,430px)] mx-auto sm:w-full sm:max-w-[960px] box-border bg-[#050807] rounded-3xl sm:rounded-[36px] overflow-hidden overflow-x-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 aspect-[9/16] sm:aspect-video min-h-max"
       >
         {/* CINEMATIC LAYERED BACKGROUND */}
         <motion.div
@@ -174,7 +174,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             </div>
 
             {/* MOBILE ONLY: Middle Graphics injected here after stamp */}
-            <div className="flex sm:hidden w-full items-center justify-between mt-4 mb-2 z-20">
+            <div className="flex sm:hidden w-full items-center justify-between mt-6 mb-4 z-20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/hh-goa-circle-logo.png" alt="Hacker House Goa Circular Logo" className="w-[60px] h-[60px] object-contain drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
