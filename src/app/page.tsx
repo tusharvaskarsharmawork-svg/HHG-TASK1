@@ -56,13 +56,13 @@ export default function Home() {
             </div>
 
             {/* Right Column: Form */}
-            <div className="flex justify-center lg:justify-end lg:h-[100dvh] lg:overflow-y-auto lg:overflow-x-hidden pt-12 lg:pt-32 lg:pb-32 pb-12 px-6 lg:px-4 w-full custom-scrollbar">
+            <div className="flex justify-center lg:justify-end lg:h-[100dvh] lg:overflow-y-auto lg:overflow-x-hidden pt-12 lg:pt-32 lg:pb-32 pb-12 px-6 lg:px-4 w-full hide-scrollbar">
               <UploadSection onUploadComplete={setUserData} />
             </div>
 
           </div>
         ) : (
-          <div className="h-[100dvh] overflow-y-auto w-full custom-scrollbar pt-20 px-4 sm:px-6 pb-12">
+          <div className="h-[100dvh] overflow-y-auto w-full hide-scrollbar pt-20 px-4 sm:px-6 pb-12">
             <PreviewSection userData={userData!} onReset={() => setUserData(null)} />
           </div>
         )}
