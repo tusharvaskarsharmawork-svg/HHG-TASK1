@@ -12,6 +12,7 @@ export const ProfileFrame = React.forwardRef<HTMLDivElement, ProfileFrameProps>(
 
     return (
       <div 
+        ref={ref}
         className="relative w-full max-w-[512px] aspect-square mx-auto bg-[#050807] overflow-hidden flex flex-col font-sans text-white border border-[#FFD31A]/30 rounded-3xl sm:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)]"
       >
         {/* CINEMATIC LAYERED BACKGROUND */}

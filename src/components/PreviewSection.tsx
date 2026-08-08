@@ -39,13 +39,24 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
     let originalStyles = new Map<HTMLElement, string | null>();
     let elementsCleaned: HTMLElement[] = [];
     
+    // STEP 8 - EXPORT ONLY AFTER RENDER
+    await new Promise(resolve => setTimeout(resolve, 50));
+
     try {
+      console.group("Builder Pass Export");
+      
+      // STEP 9 - DEBUGGING
+      console.log("activeTab:", activeTab);
+      console.log("frameRef.current:", frameRef.current);
+      console.log("cardRef.current:", cardRef.current);
+
       const node = activeTab === "frame" ? frameRef.current : cardRef.current;
       if (!node) {
-        throw new Error("Ticket element not found.");
+        console.error("Target ref is null! The component might be unmounted.");
+        console.groupEnd();
+        throw new Error(`Ticket element not found for tab: ${activeTab}. Ensure the component is mounted.`);
       }
 
-      console.group("Builder Pass Export");
       console.log("ticketRef.current:", node);
       const rect = node.getBoundingClientRect();
       console.log("image dimensions:", `${rect.width}x${rect.height}`);
