@@ -13,15 +13,15 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between">
-      <Link href="/" className="flex items-center gap-1 sm:gap-2 group">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between pointer-events-none">
+      <Link href="/" className="flex items-center gap-1 sm:gap-2 group pointer-events-auto">
         <span className="font-mono text-lg sm:text-xl font-bold tracking-widest text-primary group-hover:text-primary/80 transition-colors">
           HH
           <span className="text-secondary ml-1 font-sans italic text-xl sm:text-2xl -rotate-12 inline-block">गोवा</span>
         </span>
       </Link>
 
-      <div className="flex items-center gap-0.5 sm:gap-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full p-1 shadow-xl">
+      <div className="flex items-center gap-0.5 sm:gap-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full p-1 shadow-xl pointer-events-auto">
         {navLinks.map((link) => {
           const isActive = pathname === link.path;
           return (

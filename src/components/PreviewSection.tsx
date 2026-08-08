@@ -238,18 +238,22 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
         role="tablist" 
         aria-label="Preview selection"
         onKeyDown={handleKeyDown}
-        className="relative flex items-center p-1.5 mt-2 mb-1 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-50 w-full sm:w-[fit-content] sm:min-w-[380px]"
+        className="relative flex items-center p-1.5 mt-2 mb-1 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-[50] w-full sm:w-[fit-content] sm:min-w-[380px]"
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
+              type="button"
               role="tab"
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative flex-1 py-2 text-sm font-bold rounded-full outline-none transition-all duration-300 ${
+              onClick={() => {
+                console.log(tab.id);
+                setActiveTab(tab.id);
+              }}
+              className={`relative z-[20] flex-1 py-2 text-sm font-bold rounded-full outline-none transition-all duration-300 cursor-pointer pointer-events-auto ${
                 isActive 
                   ? "text-black drop-shadow-sm" 
                   : "text-white/70 hover:text-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#FFD31A]/50"
@@ -257,16 +261,16 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
             >
               {isActive && (
                 <motion.div
-                  layoutId="activeTabIndicator"
-                  className="absolute inset-0 bg-[#FFD31A] rounded-full shadow-[0_0_20px_rgba(0,214,180,0.2)]"
+                  layoutId="activeTab"
+                  className="absolute inset-0 bg-[#FFD31A] rounded-full shadow-[0_0_20px_rgba(0,214,180,0.2)] z-[10] pointer-events-none"
                   transition={{
                     type: "spring",
                     stiffness: 320,
-                    damping: 28,
+                    damping: 30,
                   }}
                 />
               )}
-              <span className="relative z-10">{tab.label}</span>
+              <span className="relative z-[20] pointer-events-none">{tab.label}</span>
             </button>
           );
         })}
