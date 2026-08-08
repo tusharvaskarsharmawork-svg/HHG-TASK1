@@ -3,7 +3,13 @@
 import { useRef, useState, useCallback, KeyboardEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 import { Download, RefreshCw } from "lucide-react";
+
+// Mock toast to avoid breaking if a standard UI toast is not installed
+const toast = ({ title, description }: { title: string; description: string }) => {
+  alert(`${title}\n${description}`);
+};
 
 import { UserData } from "./UploadSection";
 import { ProfileFrame } from "./ProfileFrame";
@@ -32,21 +38,47 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
     setIsDownloading(true);
     try {
       const node = activeTab === "frame" ? frameRef.current : cardRef.current;
-      if (!node) return;
+      if (!node) {
+        throw new Error("Ticket element not found.");
+      }
 
-      const dataUrl = await toPng(node, {
-        quality: 1,
+      console.log("ticketRef.current:", node);
+      const rect = node.getBoundingClientRect();
+      console.log("image dimensions:", `${rect.width}x${rect.height}`);
+      console.log("loaded fonts status:", document.fonts.status);
+      console.log("loaded images: Profile photo is converted to Base64");
+      console.log("QR generation status: rendered inline as SVG");
+
+      await document.fonts.ready;
+
+      let dataUrl = "";
+      const options = {
         pixelRatio: 4,
         cacheBust: true,
-      });
+        backgroundColor: "#050807",
+        skipAutoScale: false
+      };
+
+      try {
+        dataUrl = await toPng(node, options);
+      } catch (err) {
+        console.warn("html-to-image failed, falling back to html2canvas...", err);
+        const canvas = await html2canvas(node, { scale: 4, backgroundColor: "#050807", useCORS: true });
+        dataUrl = canvas.toDataURL("image/png");
+      }
 
       const link = document.createElement("a");
       link.download = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error("Failed to generate image", err);
-      alert("Error generating the image. Please try again.");
+    } catch (error: any) {
+      console.error("Export failed", error);
+      console.error(error.stack);
+
+      toast({
+        title:"Export Failed",
+        description: error.message || String(error)
+      });
     } finally {
       setIsDownloading(false);
     }

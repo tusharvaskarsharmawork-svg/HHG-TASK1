@@ -97,7 +97,18 @@ export function UploadSection({ onUploadComplete }: UploadSectionProps) {
         );
       }
 
-      const imageUrl = URL.createObjectURL(selected);
+      let imageUrl = "";
+      try {
+        imageUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(selected);
+        });
+      } catch (err) {
+        console.error("Failed to read file as Data URL", err);
+        throw err;
+      }
       const cropResult = await detectFace(imageUrl);
 
       if (cropResult && onUploadComplete) {
