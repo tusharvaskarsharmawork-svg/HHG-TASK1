@@ -86,7 +86,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </motion.div>
 
         {/* LEFT SIDE (Main Identity) */}
-        <div className="relative flex-1 min-w-0 p-4 sm:p-5 sm:pr-2 flex flex-col z-10 pb-8 sm:pb-10 overflow-y-auto sm:overflow-visible custom-scrollbar">
+        <div className="relative flex-1 min-w-0 p-4 sm:p-5 sm:pr-4 flex flex-col z-10 pb-8 sm:pb-10 overflow-y-auto sm:overflow-visible custom-scrollbar">
 
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
             {/* Profile Photo */}
@@ -116,7 +116,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             <div className="flex flex-col flex-1 min-w-0 w-full pt-1">
               <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-0.5 sm:mb-1">Builder</span>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] font-serif mb-0.5 sm:mb-1 leading-[1.1] line-clamp-2 break-words whitespace-normal">{name}</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] font-serif mb-0.5 sm:mb-1 leading-[1.1] break-words whitespace-normal">{name}</h2>
 
               {teamName && (
                 <div className="text-lg sm:text-xl text-[#FFD31A] font-medium truncate mb-0.5 sm:mb-1 font-sans tracking-wide">
@@ -173,24 +173,24 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </div>
 
         {/* CENTER COLUMN (Desktop Graphics) */}
-        <div className="hidden sm:flex relative w-[180px] md:w-[200px] lg:w-[220px] flex-shrink-0 flex-col items-center justify-between z-20 pointer-events-none select-none pt-4 pb-[26px]">
+        <div className="hidden sm:flex relative w-[130px] md:w-[150px] lg:w-[160px] flex-shrink-0 flex-col items-end justify-between z-20 pointer-events-none select-none pt-2 pb-[18px]">
           {/* Hacker House Goa Circular Logo Badge */}
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-end">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/hh-goa-circle-logo.png"
               alt="Hacker House Goa Circular Logo"
-              className="w-auto h-16 md:h-20 lg:h-24 max-w-[140px] md:max-w-[170px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
+              className="w-auto h-14 md:h-[72px] lg:h-[86px] max-w-[120px] md:max-w-[150px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105 translate-x-2 -translate-y-2"
             />
           </div>
 
           {/* Palm Tree & Laptop */}
-          <div className="w-full flex justify-center items-end h-full">
+          <div className="w-full flex justify-end items-end h-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/palm-laptop-clean.png"
               alt="Palm tree and laptop illustration"
-              className="h-auto w-auto max-h-[180px] md:max-h-[250px] lg:max-h-[295px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] opacity-95 transition-transform duration-300 hover:scale-105 origin-bottom"
+              className="h-auto w-auto max-h-[170px] md:max-h-[230px] lg:max-h-[270px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] opacity-95 transition-transform duration-300 hover:scale-105 origin-bottom translate-x-3 translate-y-3"
             />
           </div>
         </div>
