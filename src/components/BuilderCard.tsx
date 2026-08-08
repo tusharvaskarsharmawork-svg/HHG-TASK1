@@ -35,13 +35,17 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
     const [origin, setOrigin] = useState("https://hhgoa.com");
 
     useEffect(() => {
-      setOrigin(window.location.origin)      <motion.div 
+      setOrigin(window.location.origin);
+    }, []);
+
+    return (
+      <motion.div 
         ref={ref}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, rotate: 0.5 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20 }}
-        className="relative flex flex-col sm:flex-row w-full max-w-[960px] bg-[#050807] rounded-3xl sm:rounded-[36px] overflow-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 max-h-[85vh] sm:max-h-[80vh]"
+        className="relative flex flex-col sm:flex-row w-full max-w-[960px] bg-[#050807] rounded-3xl sm:rounded-[36px] overflow-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 max-h-[70vh]"
       >
         {/* CINEMATIC LAYERED BACKGROUND */}
         <motion.div 
@@ -82,15 +86,15 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </motion.div>
 
         {/* LEFT SIDE (Main Identity) */}
-        <div className="relative flex-1 p-6 sm:p-8 sm:pr-10 flex flex-col z-10 pb-12 sm:pb-16 overflow-y-auto sm:overflow-visible custom-scrollbar">
+        <div className="relative flex-1 p-4 sm:p-5 sm:pr-6 flex flex-col z-10 pb-8 sm:pb-10 overflow-y-auto sm:overflow-visible custom-scrollbar">
           
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
             {/* Profile Photo */}
             <div className="relative flex-shrink-0">
               {/* Vibrant Orange Glow Behind Photo */}
               <div className="absolute -inset-4 bg-gradient-to-br from-[#FF9D00] to-[#FF2E8A] opacity-30 blur-2xl rounded-2xl" />
               
-              <div className="relative w-32 h-36 sm:w-[152px] sm:h-[164px] rounded-3xl overflow-hidden border border-[#FFD31A]/40 shadow-[0_0_30px_rgba(0,0,0,0.8)] bg-[#050807]">
+              <div className="relative w-28 h-32 sm:w-[130px] sm:h-[140px] rounded-3xl overflow-hidden border border-[#FFD31A]/40 shadow-[0_0_30px_rgba(0,0,0,0.8)] bg-[#050807]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={originalImage.src} 
@@ -115,21 +119,21 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
 
             {/* Builder Details */}
             <div className="flex flex-col flex-1 min-w-0 w-full pt-1">
-              <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-1 sm:mb-2">Builder</span>
+              <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-0.5 sm:mb-1">Builder</span>
               
-              <h2 className="text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] truncate font-serif mb-1 sm:mb-1.5 leading-[1.1]">{name}</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] truncate font-serif mb-0.5 sm:mb-1 leading-[1.1]">{name}</h2>
               
               {teamName && (
-                <div className="text-lg sm:text-xl text-[#FFD31A] font-medium truncate mb-1 sm:mb-2 font-sans tracking-wide">
+                <div className="text-lg sm:text-xl text-[#FFD31A] font-medium truncate mb-0.5 sm:mb-1 font-sans tracking-wide">
                   {teamName}
                 </div>
               )}
               
-              <div className="text-xs sm:text-sm text-white/50 font-mono tracking-wider truncate mb-4 sm:mb-5">{role}</div>
+              <div className="text-xs sm:text-sm text-white/50 font-mono tracking-wider truncate mb-2 sm:mb-3">{role}</div>
 
               {/* Mood Badge */}
               {moodData && (
-                <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-transparent border border-[#FF2E8A]/40 rounded-xl w-fit">
+                <div className="flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-transparent border border-[#FF2E8A]/40 rounded-xl w-fit">
                   <span className="text-base sm:text-lg opacity-80">{moodData.icon}</span>
                   <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF2E8A] uppercase tracking-[0.15em]">{moodData.label}</span>
                 </div>
@@ -139,9 +143,9 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
 
           {/* Tags */}
           {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-6 sm:mt-8">
+            <div className="flex flex-wrap gap-2 mt-3 sm:mt-4">
               {tags.map(tag => (
-                <div key={tag} className="px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[#00D6B4]/30 bg-transparent">
+                <div key={tag} className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-[#00D6B4]/30 bg-transparent">
                   <span className="text-[10px] sm:text-xs font-mono text-[#00D6B4] font-medium tracking-wide">#{tag}</span>
                 </div>
               ))}
@@ -149,9 +153,8 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
           )}
 
           {/* Micro Metadata & Graphics */}
-          <div className="mt-auto pt-8 sm:pt-10 flex justify-between items-end">
-            <div className="flex flex-col gap-2 sm:gap-3">
-              <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-0.5 sm:mb-1">Coordinates</span>
+          <div className="mt-auto pt-4 sm:pt-5 flex justify-between items-end">
+            <div className="flex flex-col gap-1 sm:gap-1.5">`n              <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-0.5 sm:mb-1">Coordinates</span>
               <div className="flex items-center gap-6">
                 <span className="text-[10px] sm:text-xs font-mono text-white/70 tracking-widest">15.2993° N  •  74.1240° E</span>
               </div>
@@ -161,7 +164,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             </div>
 
             {/* Surfboard / Wave Graphic */}
-            <div className="hidden md:flex flex-col items-center opacity-30 gap-2 sm:gap-3 mr-4">
+            <div className="hidden md:flex flex-col items-center opacity-30 gap-1 sm:gap-1.5 mr-4">
               <svg width="100" height="20" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <ellipse cx="60" cy="12" rx="60" ry="10" stroke="#FFD31A" strokeWidth="1" strokeDasharray="4 2"/>
                 <line x1="60" y1="2" x2="60" y2="22" stroke="#FFD31A" strokeWidth="1"/>
@@ -175,7 +178,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </div>
 
         {/* CENTER PERFORATION & DIE CUTS */}
-        <div className="relative flex items-center justify-center border-t sm:border-t-0 sm:border-l border-dashed border-white/20 mx-6 sm:mx-0 sm:my-6 z-20">
+        <div className="relative flex items-center justify-center border-t sm:border-t-0 sm:border-l border-dashed border-white/20 mx-6 sm:mx-0 sm:my-4 z-20">
           <div className="absolute -left-3 sm:left-1/2 -top-3 sm:-top-8 sm:-translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-black border sm:border-t-0 sm:border-r-0 border-[#FFD31A]/40 z-30" />
           <div className="absolute -right-3 sm:left-1/2 -bottom-3 sm:-bottom-8 sm:-translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-black border sm:border-b-0 sm:border-l-0 border-[#FFD31A]/40 z-30" />
           
@@ -185,10 +188,10 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </div>
 
         {/* RIGHT SIDE (QR & Verification) */}
-        <div className="relative w-full sm:w-[320px] p-6 sm:p-8 pb-16 sm:pb-20 flex flex-col items-center text-center z-10 bg-transparent">
+        <div className="relative w-full sm:w-[260px] p-4 sm:p-5 pb-10 sm:pb-12 flex flex-col items-center text-center z-10 bg-transparent">
           
           {/* Event Branding */}
-          <div className="flex flex-col items-center mb-6">
+          <div className="flex flex-col items-center mb-3">
             <span className="font-serif text-2xl sm:text-3xl text-[#FFF7EA] tracking-wide mb-1">HH GOA 2026</span>
             <span className="text-[9px] sm:text-[10px] text-[#FFD31A] uppercase tracking-[0.3em] font-mono">Builder Pass</span>
           </div>
@@ -198,11 +201,11 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="p-3 sm:p-4 bg-[#FFF7EA] rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-5 sm:mb-6 border border-[#FFD31A]/30"
+            className="p-2.5 sm:p-3 bg-[#FFF7EA] rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-3 sm:mb-4 border border-[#FFD31A]/30"
           >
             <QRCodeSVG 
               value={`${origin}/pass/${builderId}`} 
-              size={130}
+              size={110}
               bgColor="#FFF7EA"
               fgColor="#050807"
               level="Q"
@@ -210,13 +213,13 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             />
           </motion.div>
 
-          <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-widest text-white/40 mb-6 sm:mb-8">Scan to Verify Builder</span>
+          <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-widest text-white/40 mb-3 sm:mb-4">Scan to Verify Builder</span>
 
           {/* Builder ID & Status */}
-          <div className="w-full flex flex-col items-center gap-1.5 sm:gap-2 mt-auto">
+          <div className="w-full flex flex-col items-center gap-1 sm:gap-1.5 mt-auto">
             <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.2em] text-white/30">Builder ID</span>
             <span className="font-mono text-lg sm:text-xl text-[#00D6B4] font-bold tracking-wider">{serial}</span>
-            <div className="flex items-center gap-2 mt-1 sm:mt-2 px-3 py-1 sm:px-4 sm:py-1.5 bg-[#00D6B4]/10 rounded-full border border-[#00D6B4]/30">
+            <div className="flex items-center gap-2 mt-0.5 sm:mt-1 px-3 py-1 sm:px-4 sm:py-1.5 bg-[#00D6B4]/10 rounded-full border border-[#00D6B4]/30">
               <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00D6B4]" />
               <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-[#00D6B4] uppercase">Access Granted</span>
             </div>
@@ -229,7 +232,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 15 }}
             className="absolute top-4 right-4 sm:top-6 sm:right-6 pointer-events-none mix-blend-screen select-none"
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-dashed border-[#FF2E8A] p-1">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-dashed border-[#FF2E8A] p-1">
               <div className="w-full h-full rounded-full border border-[#FF2E8A] flex flex-col items-center justify-center text-[#FF2E8A]">
                 <span className="text-[7px] sm:text-[8px] font-bold tracking-[0.2em] uppercase mb-0.5 sm:mb-1">GOA</span>
                 <span className="text-lg sm:text-xl font-bold uppercase leading-none mb-0.5 sm:mb-1">2026</span>
@@ -240,13 +243,11 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         </div>
 
         {/* YELLOW FOOTER STRIP */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 sm:h-10 bg-[#FFD31A] text-black font-bold flex items-center justify-center z-40 px-4 shadow-[0_-5px_20px_rgba(255,211,26,0.2)]">
+        <div className="absolute bottom-0 left-0 right-0 h-6 sm:h-7 bg-[#FFD31A] text-black font-bold flex items-center justify-center z-40 px-4 shadow-[0_-5px_20px_rgba(255,211,26,0.2)]">
            <span className="font-mono text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.4em] uppercase whitespace-nowrap overflow-hidden text-ellipsis">
              GOA • INDIA • 28–31 OCT 2026 • BUILD • SHIP • REPEAT
            </span>
-        </div>�� SHIP • REPEAT
-           </span>
-           {/* Bottom Notches to ensure strip doesn't cover them entirely on mobile */}
+
         </div>
 
       </motion.div>

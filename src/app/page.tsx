@@ -10,7 +10,7 @@ export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   return (
-    <main className="relative min-h-screen flex flex-col p-6 sm:p-12 overflow-x-hidden overflow-y-auto bg-transparent pt-24">
+    <main className={`relative flex flex-col overflow-x-hidden bg-transparent ${userData ? "p-4 sm:p-6 pt-16 h-screen overflow-hidden" : "min-h-screen p-6 sm:p-12 pt-24 overflow-y-auto"}`}>
 
       <div className="z-10 flex-1 flex flex-col lg:justify-center max-w-7xl mx-auto w-full">
         {!userData ? (

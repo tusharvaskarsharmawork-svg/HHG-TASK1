@@ -231,14 +231,14 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full flex flex-col items-center gap-4 sm:gap-6 pb-8"
+      className="w-full flex flex-col items-center gap-2 sm:gap-3 pb-4"
     >
       {/* PREMIUM SEGMENTED CONTROL */}
       <div 
         role="tablist" 
         aria-label="Preview selection"
         onKeyDown={handleKeyDown}
-        className="relative flex items-center p-1.5 mt-4 mb-2 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-50 w-full sm:w-[fit-content] sm:min-w-[380px]"
+        className="relative flex items-center p-1.5 mt-2 mb-1 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-50 w-full sm:w-[fit-content] sm:min-w-[380px]"
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -249,7 +249,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative flex-1 py-3 text-sm font-bold rounded-full outline-none transition-all duration-300 ${
+              className={`relative flex-1 py-2 text-sm font-bold rounded-full outline-none transition-all duration-300 ${
                 isActive 
                   ? "text-black drop-shadow-sm" 
                   : "text-white/70 hover:text-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#FFD31A]/50"
@@ -273,7 +273,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       </div>
 
       {/* CONTENT AREA WITH SMOOTH OVERLAPPING TRANSITIONS */}
-      <div className="grid w-full place-items-center mb-4 sm:mb-6">
+      <div className="grid w-full place-items-center mb-2 sm:mb-3">
         <AnimatePresence mode="popLayout">
           {activeTab === "frame" && (
             <motion.div
@@ -310,11 +310,11 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       </div>
 
       {/* ACTION BUTTONS */}
-      <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 w-full px-6 sm:px-0 z-10">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-3 w-full px-6 sm:px-0 z-10">
         <button
           onClick={handleDownload}
           disabled={isDownloading}
-          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-4 sm:py-3 rounded-full bg-gradient-to-r from-primary to-[#FF9D00] text-black font-bold hover:-translate-y-0.5 transition-all hover:shadow-[0_0_20px_rgba(255,210,26,0.4)] disabled:opacity-50"
+          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-primary to-[#FF9D00] text-black font-bold hover:-translate-y-0.5 transition-all hover:shadow-[0_0_20px_rgba(255,210,26,0.4)] disabled:opacity-50"
         >
           {isDownloading ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
           Download High-Res
@@ -323,7 +323,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
         <button
           onClick={handleShare}
           disabled={isSharing}
-          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-4 sm:py-3 rounded-full bg-[#000000] border border-white/20 text-white font-medium hover:bg-black/80 transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] disabled:opacity-50"
+          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-2.5 rounded-full bg-[#000000] border border-white/20 text-white font-medium hover:bg-black/80 transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
           {isSharing ? (
             <RefreshCw className="w-5 h-5 animate-spin" />
@@ -337,7 +337,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
         <button
           onClick={onReset}
-          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-4 sm:py-3 rounded-full bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all"
+          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all"
         >
           <RefreshCw className="w-5 h-5" />
           Start Over
