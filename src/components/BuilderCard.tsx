@@ -1,0 +1,228 @@
+import React, { useEffect, useState } from "react";
+import { UserData } from "@/components/UploadSection";
+import { Fingerprint, CheckCircle2 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { motion } from "framer-motion";
+
+interface BuilderCardProps {
+  userData: UserData;
+}
+
+const PRESET_MOODS = [
+  { id: "shipping", label: "SHIPPING", icon: "⚡" },
+  { id: "grinding", label: "GRINDING", icon: "🔥" },
+  { id: "building", label: "BUILDING", icon: "🚀" },
+  { id: "locked-in", label: "LOCKED IN", icon: "🧠" },
+  { id: "debugging", label: "DEBUGGING", icon: "☕" },
+  { id: "chill", label: "CHILL", icon: "🌴" },
+  { id: "flow", label: "FLOW STATE", icon: "🌊" },
+  { id: "vibing", label: "VIBING", icon: "🎉" },
+  { id: "sleep", label: "SLEEP DEPRIVED", icon: "😴" },
+  { id: "ai", label: "AI MODE", icon: "🤖" },
+];
+
+export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
+  ({ userData }, ref) => {
+    const { name, role, teamName, tags, mood, builderId, cropResult } = userData;
+    const { x, y, width, height, originalImage } = cropResult;
+
+    const moodData = PRESET_MOODS.find(m => m.id === mood);
+
+    // Random issue date close to current date
+    const issueDate = "08 Aug 2026";
+    const serial = `HHG-2026-${builderId}`;
+
+    const [origin, setOrigin] = useState("https://hhgoa.com");
+
+    useEffect(() => {
+      setOrigin(window.location.origin);
+    }, []);
+
+    return (
+      <motion.div 
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ y: -8, rotate: 0.5 }}
+        transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20 }}
+        className="relative flex flex-col sm:flex-row w-full max-w-[1000px] bg-[#06291F] rounded-3xl sm:rounded-[40px] overflow-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2)] hover:border-[#FFD31A]/50"
+      >
+        {/* Paper Grain Overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay z-0"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+        />
+
+        {/* LEFT SIDE (Main Identity) */}
+        <div className="relative flex-1 p-8 sm:p-12 sm:pr-16 flex flex-col z-10 pb-16 sm:pb-24">
+          
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-10 items-start">
+            {/* Profile Photo */}
+            <div className="relative flex-shrink-0">
+              {/* Vibrant Orange Glow Behind Photo */}
+              <div className="absolute -inset-4 bg-gradient-to-br from-[#FF9D00] to-[#FF2E8A] opacity-30 blur-2xl rounded-2xl" />
+              
+              <div className="relative w-36 h-40 sm:w-44 sm:h-48 rounded-3xl overflow-hidden border border-[#FFD31A]/40 shadow-[0_0_30px_rgba(0,0,0,0.8)] bg-[#050807]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={originalImage.src} 
+                  alt="Profile"
+                  className="absolute max-w-none filter contrast-[1.1] saturate-[1.1]"
+                  style={{
+                    width: `${(originalImage.width / width) * 100}%`,
+                    height: `${(originalImage.height / height) * 100}%`,
+                    left: `-${(x / width) * 100}%`,
+                    top: `-${(y / height) * 100}%`,
+                  }}
+                  crossOrigin="anonymous"
+                />
+                <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] pointer-events-none" />
+              </div>
+              
+              {/* 2026 Overlapping Pill */}
+              <div className="absolute -bottom-3 -right-3 bg-[#050807] border border-[#FFD31A] px-3 py-1 rounded-full shadow-xl">
+                <span className="font-mono text-xs font-bold text-[#FFD31A] tracking-wider">2026</span>
+              </div>
+            </div>
+
+            {/* Builder Details */}
+            <div className="flex flex-col flex-1 min-w-0 w-full pt-1">
+              <span className="text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-2">Builder</span>
+              
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] tracking-tight text-[#FFF7EA] truncate font-serif mb-2 leading-[1.1]">{name}</h2>
+              
+              {teamName && (
+                <div className="text-xl sm:text-2xl text-[#FFD31A] font-medium truncate mb-2 font-sans tracking-wide">
+                  {teamName}
+                </div>
+              )}
+              
+              <div className="text-sm sm:text-base text-white/50 font-mono tracking-wider truncate mb-6">{role}</div>
+
+              {/* Mood Badge */}
+              {moodData && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-transparent border border-[#FF2E8A]/40 rounded-xl w-fit">
+                  <span className="text-lg opacity-80">{moodData.icon}</span>
+                  <span className="font-mono text-xs font-bold text-[#FF2E8A] uppercase tracking-[0.15em]">{moodData.label}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Tags */}
+          {tags && tags.length > 0 && (
+            <div className="flex flex-wrap gap-2.5 mt-8 sm:mt-10">
+              {tags.map(tag => (
+                <div key={tag} className="px-4 py-1.5 rounded-full border border-[#00D6B4]/30 bg-transparent">
+                  <span className="text-xs font-mono text-[#00D6B4] font-medium tracking-wide">#{tag}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Micro Metadata & Graphics */}
+          <div className="mt-auto pt-12 flex justify-between items-end">
+            <div className="flex flex-col gap-3">
+              <span className="text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-1">Coordinates</span>
+              <div className="flex items-center gap-6">
+                <span className="text-xs font-mono text-white/70 tracking-widest">15.2993° N  •  74.1240° E</span>
+              </div>
+              <span className="text-[10px] font-mono text-white/50 tracking-widest mt-1">
+                Issued {issueDate}  •  No. {Math.random().toString(16).slice(2, 9).toUpperCase()}
+              </span>
+            </div>
+
+            {/* Surfboard / Wave Graphic */}
+            <div className="hidden md:flex flex-col items-center opacity-30 gap-3 mr-4">
+              <svg width="120" height="24" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="60" cy="12" rx="60" ry="10" stroke="#FFD31A" strokeWidth="1" strokeDasharray="4 2"/>
+                <line x1="60" y1="2" x2="60" y2="22" stroke="#FFD31A" strokeWidth="1"/>
+              </svg>
+              <svg width="60" height="12" viewBox="0 0 60 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-[#00D6B4]">
+                <path d="M0 6C5 6 5 2 10 2C15 2 15 6 20 6C25 6 25 2 30 2C35 2 35 6 40 6C45 6 45 2 50 2C55 2 55 6 60 6" strokeWidth="1"/>
+                <path d="M0 10C5 10 5 6 10 6C15 6 15 10 20 10C25 10 25 6 30 6C35 6 35 10 40 10C45 10 45 6 50 6C55 6 55 10 60 10" strokeWidth="1"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* CENTER PERFORATION & DIE CUTS */}
+        <div className="relative flex items-center justify-center border-t sm:border-t-0 sm:border-l border-dashed border-white/20 mx-8 sm:mx-0 sm:my-8 z-20">
+          {/* Transparent-simulated Die-cuts (Match parent container color #000 ideally, or use a very dark color) */}
+          <div className="absolute -left-4 sm:left-1/2 -top-4 sm:-top-10 sm:-translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black border sm:border-t-0 sm:border-r-0 border-[#FFD31A]/40 z-30" />
+          <div className="absolute -right-4 sm:left-1/2 -bottom-4 sm:-bottom-10 sm:-translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black border sm:border-b-0 sm:border-l-0 border-[#FFD31A]/40 z-30" />
+          
+          {/* Fingerprint at top */}
+          <div className="absolute top-4 sm:top-2 -translate-y-1/2 text-[#00D6B4] opacity-50 sm:-translate-x-1/2 sm:left-1/2 bg-[#06291F] p-1">
+            <Fingerprint className="w-6 h-6 rotate-90 sm:rotate-0" />
+          </div>
+        </div>
+
+        {/* RIGHT SIDE (QR & Verification) */}
+        <div className="relative w-full sm:w-[360px] p-8 sm:p-12 pb-24 flex flex-col items-center text-center z-10 bg-gradient-to-b from-[#06291F] to-[#041a13]">
+          
+          {/* Event Branding */}
+          <div className="flex flex-col items-center mb-8">
+            <span className="font-serif text-3xl text-[#FFF7EA] tracking-wide mb-2">HH GOA 2026</span>
+            <span className="text-[10px] text-[#FFD31A] uppercase tracking-[0.3em] font-mono">Builder Pass</span>
+          </div>
+
+          {/* QR Code */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="p-4 bg-[#FFF7EA] rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-6 border border-[#FFD31A]/30"
+          >
+            <QRCodeSVG 
+              value={`${origin}/pass/${builderId}`} 
+              size={150}
+              bgColor="#FFF7EA"
+              fgColor="#050807"
+              level="Q"
+              includeMargin={false}
+            />
+          </motion.div>
+
+          <span className="text-[9px] uppercase font-mono tracking-widest text-white/40 mb-8">Scan to Verify Builder</span>
+
+          {/* Builder ID & Status */}
+          <div className="w-full flex flex-col items-center gap-2 mt-auto">
+            <span className="text-[10px] uppercase font-mono tracking-[0.2em] text-white/30">Builder ID</span>
+            <span className="font-mono text-xl text-[#00D6B4] font-bold tracking-wider">{serial}</span>
+            <div className="flex items-center gap-2 mt-2 px-4 py-1.5 bg-[#00D6B4]/10 rounded-full border border-[#00D6B4]/30">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00D6B4]" />
+              <span className="text-[10px] font-mono tracking-widest text-[#00D6B4] uppercase">Access Granted</span>
+            </div>
+          </div>
+
+          {/* Vintage Stamp Overlay (Top Right) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+            animate={{ opacity: 0.4, scale: 1, rotate: 15 }}
+            transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+            className="absolute top-6 right-6 pointer-events-none mix-blend-screen select-none"
+          >
+            <div className="w-24 h-24 rounded-full border-2 border-dashed border-[#FF2E8A] p-1">
+              <div className="w-full h-full rounded-full border border-[#FF2E8A] flex flex-col items-center justify-center text-[#FF2E8A]">
+                <span className="text-[8px] font-bold tracking-[0.2em] uppercase mb-1">GOA</span>
+                <span className="text-xl font-bold uppercase leading-none mb-1">2026</span>
+                <span className="text-[7px] font-bold tracking-[0.2em] uppercase">Admitted</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* YELLOW FOOTER STRIP */}
+        <div className="absolute bottom-0 left-0 right-0 h-10 sm:h-12 bg-[#FFD31A] text-black font-bold flex items-center justify-center z-40 px-4 shadow-[0_-5px_20px_rgba(255,211,26,0.2)]">
+           <span className="font-mono text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+             GOA • INDIA • 28–31 OCT 2026 • BUILD • SHIP • REPEAT
+           </span>
+           {/* Bottom Notches to ensure strip doesn't cover them entirely on mobile */}
+        </div>
+
+      </motion.div>
+    );
+  }
+);
+BuilderCard.displayName = "BuilderCard";
