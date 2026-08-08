@@ -33,9 +33,9 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
   
   const [activeTab, setActiveTab] = useState<TabId>("frame");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
 
-  const handleDownload = useCallback(async () => {
-    setIsDownloading(true);
+  const generateImage = useCallback(async (): Promise<string> => {
     let originalStyles = new Map<HTMLElement, string | null>();
     let elementsCleaned: HTMLElement[] = [];
     
@@ -132,21 +132,14 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
         dataUrl = canvas.toDataURL("image/png");
       }
 
-      const link = document.createElement("a");
-      link.download = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
-      link.href = dataUrl;
-      link.click();
       console.groupEnd();
+      return dataUrl;
     } catch (error: any) {
       console.error(error);
       console.trace();
       console.log(activeTab === "frame" ? frameRef.current : cardRef.current);
       console.groupEnd();
-
-      toast({
-        title:"Export Failed",
-        description: error.message || String(error)
-      });
+      throw error;
     } finally {
       // Restore CSS
       elementsCleaned.forEach(el => {
@@ -157,16 +150,71 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
           el.setAttribute("style", orig);
         }
       });
-      setIsDownloading(false);
     }
   }, [activeTab]);
 
-  const handleShare = () => {
-    const text = encodeURIComponent(
-      `I'm officially joining Hacker House Goa 2026 🚀\n\nHere's my Builder Card.\n\n#FrameInGoa`
-    );
-    const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, "_blank");
+  const handleDownload = useCallback(async () => {
+    setIsDownloading(true);
+    try {
+      const dataUrl = await generateImage();
+      const link = document.createElement("a");
+      link.download = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error: any) {
+      toast({
+        title:"Export Failed",
+        description: error.message || String(error)
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [activeTab, generateImage]);
+
+  const handleShare = async () => {
+    setIsSharing(true);
+    try {
+      const dataUrl = await generateImage();
+      const fileName = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
+
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], fileName, { type: 'image/png' });
+
+      const text = `I'm officially joining Hacker House Goa 2026 🚀\n\nHere's my Builder Pass.\n\n#FrameInGoa #HHGoa2026`;
+
+      const shareData = {
+        title: 'HH Goa Builder Pass',
+        text: text,
+        files: [file]
+      };
+
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        // Desktop Fallback
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = dataUrl;
+        link.click();
+
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+        window.open(url, "_blank");
+
+        toast({
+          title: "Image Downloaded",
+          description: "Your Builder Pass has been downloaded. Attach the downloaded image to your X post before publishing."
+        });
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: "Share Failed",
+        description: "Unable to generate your Builder Pass. Please try again."
+      });
+    } finally {
+      setIsSharing(false);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -274,12 +322,17 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
         <button
           onClick={handleShare}
-          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-4 sm:py-3 rounded-full bg-[#000000] border border-white/20 text-white font-medium hover:bg-black/80 transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+          disabled={isSharing}
+          className="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-4 sm:py-3 rounded-full bg-[#000000] border border-white/20 text-white font-medium hover:bg-black/80 transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] disabled:opacity-50"
         >
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-          </svg>
-          Share on X
+          {isSharing ? (
+            <RefreshCw className="w-5 h-5 animate-spin" />
+          ) : (
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </svg>
+          )}
+          {isSharing ? "Preparing..." : "Share on X"}
         </button>
 
         <button
