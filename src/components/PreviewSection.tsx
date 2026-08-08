@@ -63,7 +63,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
         dataUrl = await toPng(node, options);
       } catch (err) {
         console.warn("html-to-image failed, falling back to html2canvas...", err);
-        const canvas = await html2canvas(node, { scale: 4, backgroundColor: "#050807", useCORS: true });
+        const canvas = await html2canvas(node, { scale: 4, backgroundColor: "#050807", useCORS: true } as any);
         dataUrl = canvas.toDataURL("image/png");
       }
 
