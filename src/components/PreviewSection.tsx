@@ -231,14 +231,14 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full flex flex-col items-center gap-8 pb-12"
+      className="w-full flex flex-col items-center gap-4 sm:gap-6 pb-8"
     >
       {/* PREMIUM SEGMENTED CONTROL */}
       <div 
         role="tablist" 
         aria-label="Preview selection"
         onKeyDown={handleKeyDown}
-        className="relative flex items-center p-1.5 mt-8 mb-2 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-50 w-full sm:w-[fit-content] sm:min-w-[380px]"
+        className="relative flex items-center p-1.5 mt-4 mb-2 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-50 w-full sm:w-[fit-content] sm:min-w-[380px]"
       >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -273,7 +273,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       </div>
 
       {/* CONTENT AREA WITH SMOOTH OVERLAPPING TRANSITIONS */}
-      <div className="grid w-full place-items-center mb-8">
+      <div className="grid w-full place-items-center mb-4 sm:mb-6">
         <AnimatePresence mode="popLayout">
           {activeTab === "frame" && (
             <motion.div
