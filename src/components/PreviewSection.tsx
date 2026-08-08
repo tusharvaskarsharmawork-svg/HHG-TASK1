@@ -36,20 +36,74 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
   const handleDownload = useCallback(async () => {
     setIsDownloading(true);
+    let originalStyles = new Map<HTMLElement, string | null>();
+    let elementsCleaned: HTMLElement[] = [];
+    
     try {
       const node = activeTab === "frame" ? frameRef.current : cardRef.current;
       if (!node) {
         throw new Error("Ticket element not found.");
       }
 
+      console.group("Builder Pass Export");
       console.log("ticketRef.current:", node);
       const rect = node.getBoundingClientRect();
       console.log("image dimensions:", `${rect.width}x${rect.height}`);
       console.log("loaded fonts status:", document.fonts.status);
-      console.log("loaded images: Profile photo is converted to Base64");
       console.log("QR generation status: rendered inline as SVG");
 
       await document.fonts.ready;
+
+      // STEP 1 - FIND THE FAILING IMAGE & WAIT
+      console.log("--- Verifying Images ---");
+      const images = Array.from(node.querySelectorAll("img"));
+      for (const img of images) {
+        console.log({
+          src: img.src.substring(0, 50) + "...",
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          complete: img.complete,
+          crossOrigin: img.crossOrigin
+        });
+        if (!img.complete) {
+          console.log("Waiting for image to load...");
+          await new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = () => {
+              console.error("Image failed to load:", img.src.substring(0, 50));
+              resolve(null);
+            };
+          });
+        }
+      }
+
+      // STEP 2 - REMOVE EXPORT-INCOMPATIBLE CSS
+      const elementsToClean = Array.from(node.querySelectorAll<HTMLElement>("*"));
+      elementsToClean.push(node);
+
+      elementsToClean.forEach(el => {
+        const computed = window.getComputedStyle(el);
+        const hasBadCSS = 
+          computed.filter !== 'none' ||
+          computed.mixBlendMode !== 'normal' ||
+          computed.backdropFilter !== 'none' ||
+          computed.maskImage !== 'none' ||
+          computed.clipPath !== 'none';
+
+        if (hasBadCSS) {
+           originalStyles.set(el, el.getAttribute("style"));
+           elementsCleaned.push(el);
+           el.style.setProperty("filter", "none", "important");
+           el.style.setProperty("mix-blend-mode", "normal", "important");
+           el.style.setProperty("backdrop-filter", "none", "important");
+           el.style.setProperty("mask-image", "none", "important");
+           el.style.setProperty("-webkit-mask-image", "none", "important");
+           el.style.setProperty("clip-path", "none", "important");
+        }
+      });
+
+      // Wait a tick for styles to apply
+      await new Promise(r => setTimeout(r, 50));
 
       let dataUrl = "";
       const options = {
@@ -71,15 +125,27 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       link.download = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
       link.href = dataUrl;
       link.click();
+      console.groupEnd();
     } catch (error: any) {
-      console.error("Export failed", error);
-      console.error(error.stack);
+      console.error(error);
+      console.trace();
+      console.log(activeTab === "frame" ? frameRef.current : cardRef.current);
+      console.groupEnd();
 
       toast({
         title:"Export Failed",
         description: error.message || String(error)
       });
     } finally {
+      // Restore CSS
+      elementsCleaned.forEach(el => {
+        const orig = originalStyles.get(el);
+        if (orig === null || orig === undefined) {
+          el.removeAttribute("style");
+        } else {
+          el.setAttribute("style", orig);
+        }
+      });
       setIsDownloading(false);
     }
   }, [activeTab]);
