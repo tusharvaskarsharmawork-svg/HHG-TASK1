@@ -305,7 +305,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
               className="col-start-1 row-start-1 w-full flex justify-center"
             >
               {/* The BuilderCard is natively responsive, so we let it flow naturally */}
-              <div className="w-full max-w-[380px] sm:max-w-[1000px] flex justify-center px-4 sm:px-0">
+              <div className="w-[calc(100vw-32px)] sm:w-full sm:max-w-[1000px] flex justify-center px-0 sm:px-0 box-border overflow-x-hidden sm:overflow-visible">
                  <BuilderCard ref={cardRef} userData={userData} />
               </div>
             </motion.div>
