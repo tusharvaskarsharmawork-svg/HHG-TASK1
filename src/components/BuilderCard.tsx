@@ -39,7 +39,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
     }, []);
 
     return (
-      <motion.div 
+      <motion.div
         ref={ref}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         className="relative flex flex-col sm:flex-row w-full max-w-[960px] bg-[#050807] rounded-3xl sm:rounded-[36px] overflow-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 max-h-[70vh]"
       >
         {/* CINEMATIC LAYERED BACKGROUND */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -56,7 +56,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
         >
           {/* Layer 2: Large radial emerald gradient (right bias) */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[70%] h-[150%] bg-[radial-gradient(ellipse_at_70%_50%,#0B3E36_0%,transparent_60%)] opacity-90" />
-          
+
           {/* Layer 3: Soft sea-green glow behind QR & Title */}
           <div className="absolute right-12 top-1/2 -translate-y-1/2 w-72 h-72 bg-[#00D6B4] rounded-full blur-[100px] opacity-[0.1]" />
 
@@ -64,16 +64,16 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
           <div className="absolute left-10 top-10 w-64 h-64 bg-[#FF9D00] rounded-full blur-[120px] opacity-[0.06]" />
 
           {/* Micro details: Topographic/organic subtle SVG pattern */}
-          <div 
+          <div
             className="absolute inset-0 opacity-[0.03]"
-            style={{ 
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%2300D6B4' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, 
-              backgroundSize: '100px 100px' 
-            }} 
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%2300D6B4' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+              backgroundSize: '100px 100px'
+            }}
           />
 
           {/* Layer 4: Noise Texture (Subtle paper grain) */}
-          <div 
+          <div
             className="absolute inset-0 mix-blend-overlay opacity-[0.03]"
             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
           />
@@ -87,17 +87,17 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
 
         {/* LEFT SIDE (Main Identity) */}
         <div className="relative flex-1 p-4 sm:p-5 sm:pr-6 flex flex-col z-10 pb-8 sm:pb-10 overflow-y-auto sm:overflow-visible custom-scrollbar">
-          
+
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
             {/* Profile Photo */}
             <div className="relative flex-shrink-0">
               {/* Vibrant Orange Glow Behind Photo */}
               <div className="absolute -inset-4 bg-gradient-to-br from-[#FF9D00] to-[#FF2E8A] opacity-30 blur-2xl rounded-2xl" />
-              
+
               <div className="relative w-28 h-32 sm:w-[130px] sm:h-[140px] rounded-3xl overflow-hidden border border-[#FFD31A]/40 shadow-[0_0_30px_rgba(0,0,0,0.8)] bg-[#050807]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={originalImage.src} 
+                <img
+                  src={originalImage.src}
                   alt="Profile"
                   className="absolute max-w-none filter contrast-[1.1] saturate-[1.1]"
                   style={{
@@ -110,7 +110,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
                 />
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] pointer-events-none" />
               </div>
-              
+
               {/* 2026 Overlapping Pill */}
               <div className="absolute -bottom-3 -right-3 bg-[#050807] border border-[#FFD31A] px-3 py-1 rounded-full shadow-xl">
                 <span className="font-mono text-xs font-bold text-[#FFD31A] tracking-wider">2026</span>
@@ -120,15 +120,15 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             {/* Builder Details */}
             <div className="flex flex-col flex-1 min-w-0 w-full pt-1">
               <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-0.5 sm:mb-1">Builder</span>
-              
+
               <h2 className="text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] truncate font-serif mb-0.5 sm:mb-1 leading-[1.1]">{name}</h2>
-              
+
               {teamName && (
                 <div className="text-lg sm:text-xl text-[#FFD31A] font-medium truncate mb-0.5 sm:mb-1 font-sans tracking-wide">
                   {teamName}
                 </div>
               )}
-              
+
               <div className="text-xs sm:text-sm text-white/50 font-mono tracking-wider truncate mb-2 sm:mb-3">{role}</div>
 
               {/* Mood Badge */}
@@ -153,8 +153,10 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
           )}
 
           {/* Micro Metadata & Graphics */}
-          <div className="mt-auto pt-4 sm:pt-5 flex justify-between items-end">
-            <div className="flex flex-col gap-1 sm:gap-1.5">`n              <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-0.5 sm:mb-1">Coordinates</span>
+          <div className="mt-auto pt-4 sm:pt-5 flex items-end gap-3 sm:gap-5 z-10">
+            {/* Coordinates */}
+            <div className="flex flex-col gap-1 sm:gap-1.5 z-10 flex-shrink-0">
+              <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-0.5 sm:mb-1">Coordinates</span>
               <div className="flex items-center gap-6">
                 <span className="text-[10px] sm:text-xs font-mono text-white/70 tracking-widest">15.2993° N  •  74.1240° E</span>
               </div>
@@ -163,25 +165,43 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
               </span>
             </div>
 
-            {/* Surfboard / Wave Graphic */}
-            <div className="hidden md:flex flex-col items-center opacity-30 gap-1 sm:gap-1.5 mr-4">
-              <svg width="100" height="20" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="60" cy="12" rx="60" ry="10" stroke="#FFD31A" strokeWidth="1" strokeDasharray="4 2"/>
-                <line x1="60" y1="2" x2="60" y2="22" stroke="#FFD31A" strokeWidth="1"/>
-              </svg>
-              <svg width="50" height="10" viewBox="0 0 60 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-[#00D6B4]">
-                <path d="M0 6C5 6 5 2 10 2C15 2 15 6 20 6C25 6 25 2 30 2C35 2 35 6 40 6C45 6 45 2 50 2C55 2 55 6 60 6" strokeWidth="1"/>
-                <path d="M0 10C5 10 5 6 10 6C15 6 15 10 20 10C25 10 25 6 30 6C35 6 35 10 40 10C45 10 45 6 50 6C55 6 55 10 60 10" strokeWidth="1"/>
-              </svg>
+            {/* #FrameInGoa Stamp Tag (Right of Coordinates & Left Bottom of Palm Tree) */}
+            <div className="flex-shrink-0 flex items-center select-none pointer-events-none z-[25] pb-0.5 opacity-65 transition-opacity duration-300 hover:opacity-90">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/frame-in-goa-stamp.png"
+                alt="#FrameInGoa Stamp"
+                className="w-auto h-11 sm:h-14 md:h-16 lg:h-20 max-w-[150px] sm:max-w-[190px] md:max-w-[220px] object-contain drop-shadow-[0_4px_14px_rgba(255,211,26,0.3)] -rotate-3"
+              />
             </div>
           </div>
+        </div>
+
+        {/* Hacker House Goa Circular Logo Badge (Upper Right above Palm Tree) */}
+        <div className="absolute right-4 sm:right-[260px] md:right-[275px] lg:right-[290px] top-3 sm:top-4 z-[25] pointer-events-none select-none">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hh-goa-circle-logo.png"
+            alt="Hacker House Goa Circular Logo"
+            className="w-auto h-12 sm:h-16 md:h-20 lg:h-24 max-w-[100px] sm:max-w-[140px] md:max-w-[170px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
+          />
+        </div>
+
+        {/* Middle Space Illustration (Palm Tree & Laptop) */}
+        <div className="absolute right-2 sm:right-[235px] md:right-[250px] lg:right-[260px] bottom-[26px] sm:bottom-[28px] z-[15] pointer-events-none select-none">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/palm-laptop-clean.png"
+            alt="Palm tree and laptop illustration"
+            className="h-auto w-auto max-h-[165px] sm:max-h-[250px] md:max-h-[275px] lg:max-h-[295px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] opacity-95 transition-transform duration-300 hover:scale-105 origin-bottom"
+          />
         </div>
 
         {/* CENTER PERFORATION & DIE CUTS */}
         <div className="relative flex items-center justify-center border-t sm:border-t-0 sm:border-l border-dashed border-white/20 mx-6 sm:mx-0 sm:my-4 z-20">
           <div className="absolute -left-3 sm:left-1/2 -top-3 sm:-top-8 sm:-translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-black border sm:border-t-0 sm:border-r-0 border-[#FFD31A]/40 z-30" />
           <div className="absolute -right-3 sm:left-1/2 -bottom-3 sm:-bottom-8 sm:-translate-x-1/2 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-black border sm:border-b-0 sm:border-l-0 border-[#FFD31A]/40 z-30" />
-          
+
           <div className="absolute top-4 sm:top-2 -translate-y-1/2 text-[#00D6B4] opacity-50 sm:-translate-x-1/2 sm:left-1/2 bg-transparent p-1">
             <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 rotate-90 sm:rotate-0" />
           </div>
@@ -189,7 +209,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
 
         {/* RIGHT SIDE (QR & Verification) */}
         <div className="relative w-full sm:w-[260px] p-4 sm:p-5 pb-10 sm:pb-12 flex flex-col items-center text-center z-10 bg-transparent">
-          
+
           {/* Event Branding */}
           <div className="flex flex-col items-center mb-3">
             <span className="font-serif text-2xl sm:text-3xl text-[#FFF7EA] tracking-wide mb-1">HH GOA 2026</span>
@@ -197,14 +217,14 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
           </div>
 
           {/* QR Code */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
             className="p-2.5 sm:p-3 bg-[#FFF7EA] rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-3 sm:mb-4 border border-[#FFD31A]/30"
           >
-            <QRCodeSVG 
-              value={`${origin}/pass/${builderId}`} 
+            <QRCodeSVG
+              value={`${origin}/pass/${builderId}`}
               size={110}
               bgColor="#FFF7EA"
               fgColor="#050807"
@@ -226,7 +246,7 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
           </div>
 
           {/* Vintage Stamp Overlay (Top Right) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
             animate={{ opacity: 0.4, scale: 1, rotate: 15 }}
             transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 15 }}
@@ -244,9 +264,9 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
 
         {/* YELLOW FOOTER STRIP */}
         <div className="absolute bottom-0 left-0 right-0 h-6 sm:h-7 bg-[#FFD31A] text-black font-bold flex items-center justify-center z-40 px-4 shadow-[0_-5px_20px_rgba(255,211,26,0.2)]">
-           <span className="font-mono text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.4em] uppercase whitespace-nowrap overflow-hidden text-ellipsis">
-             GOA • INDIA • 28–31 OCT 2026 • BUILD • SHIP • REPEAT
-           </span>
+          <span className="font-mono text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.4em] uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+            GOA • INDIA • 28–31 OCT 2026 • BUILD • SHIP • REPEAT
+          </span>
 
         </div>
 
