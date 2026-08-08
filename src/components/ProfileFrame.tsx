@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { FaceCropResult } from "@/lib/faceDetection";
 
 interface ProfileFrameProps {
@@ -11,14 +12,42 @@ export const ProfileFrame = React.forwardRef<HTMLDivElement, ProfileFrameProps>(
 
     return (
       <div 
-        ref={ref}
-        className="relative w-full max-w-[512px] aspect-square mx-auto bg-[#06291F] overflow-hidden flex flex-col font-sans text-white border border-[#FFD31A]/30 rounded-3xl sm:rounded-[32px] shadow-2xl"
+        className="relative w-full max-w-[512px] aspect-square mx-auto bg-[#050807] overflow-hidden flex flex-col font-sans text-white border border-[#FFD31A]/30 rounded-3xl sm:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)]"
       >
-        {/* Paper Grain Overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay z-0"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
-        />
+        {/* CINEMATIC LAYERED BACKGROUND */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+        >
+          {/* Layer 2: Subtle radial emerald glow centered */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#0E5A48_0%,transparent_60%)] opacity-80" />
+          
+          {/* Layer 3: Sea-green ambient behind portrait */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#00D6B4] rounded-full blur-[100px] opacity-[0.1]" />
+
+          {/* Micro details */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{ 
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%2300D6B4' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`, 
+              backgroundSize: '100px 100px' 
+            }} 
+          />
+
+          {/* Layer 4: Noise Texture */}
+          <div 
+            className="absolute inset-0 mix-blend-overlay opacity-[0.03]"
+            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+          />
+
+          {/* Cinematic lighting */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#050807]/80 via-transparent to-white/5 opacity-70" />
+
+          {/* Layer 5: Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(5,8,7,0.95)_120%)]" />
+        </motion.div>
 
         {/* TOP SECTION: Event Info */}
         <div className="relative z-10 flex justify-between items-start px-6 pt-6 sm:px-8 sm:pt-8">
