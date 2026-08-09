@@ -37,58 +37,52 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
   const generateImage = useCallback(async (): Promise<string> => {
     let originalStyles = new Map<HTMLElement, string | null>();
+    let originalSrcs = new Map<HTMLImageElement, string>();
     let elementsCleaned: HTMLElement[] = [];
 
-    // STEP 8 - EXPORT ONLY AFTER RENDER
     await new Promise(resolve => setTimeout(resolve, 50));
 
     try {
       console.group("Builder Pass Export");
 
-      // STEP 9 - DEBUGGING
-      console.log("activeTab:", activeTab);
-      console.log("frameRef.current:", frameRef.current);
-      console.log("cardRef.current:", cardRef.current);
-
       const node = activeTab === "frame" ? frameRef.current : cardRef.current;
       if (!node) {
-        console.error("Target ref is null! The component might be unmounted.");
-        console.groupEnd();
         throw new Error(`Ticket element not found for tab: ${activeTab}. Ensure the component is mounted.`);
       }
 
-      console.log("ticketRef.current:", node);
-      const rect = node.getBoundingClientRect();
-      console.log("image dimensions:", `${rect.width}x${rect.height}`);
-      console.log("loaded fonts status:", document.fonts.status);
-      console.log("QR generation status: rendered inline as SVG");
-
       await document.fonts.ready;
 
-      // STEP 1 - FIND THE FAILING IMAGE & WAIT
-      console.log("--- Verifying Images ---");
+      // STEP 1 - PRE-CONVERT ALL IMAGES TO BASE64 DATA URLS VIA FETCH + FILEREADER
       const images = Array.from(node.querySelectorAll("img"));
       for (const img of images) {
-        console.log({
-          src: img.src.substring(0, 50) + "...",
-          naturalWidth: img.naturalWidth,
-          naturalHeight: img.naturalHeight,
-          complete: img.complete,
-          crossOrigin: img.crossOrigin
-        });
         if (!img.complete) {
-          console.log("Waiting for image to load...");
           await new Promise((resolve) => {
             img.onload = resolve;
-            img.onerror = () => {
-              console.error("Image failed to load:", img.src.substring(0, 50));
-              resolve(null);
-            };
+            img.onerror = resolve;
           });
+        }
+
+        try {
+          if (img.src && !img.src.startsWith("data:")) {
+            originalSrcs.set(img, img.getAttribute("src") || img.src);
+            
+            // Fetch image as Blob and convert to Base64 Data URL to prevent canvas tainting and CORS issues
+            const res = await fetch(img.src);
+            const blob = await res.blob();
+            const dataUrl = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+            img.src = dataUrl;
+          }
+        } catch (e) {
+          console.warn("Could not pre-convert image to data URL:", img.src, e);
         }
       }
 
-      // STEP 2 - REMOVE EXPORT-INCOMPATIBLE CSS
+      // STEP 2 - TEMPORARILY CLEAN UP EXPORT-INCOMPATIBLE CSS
       const elementsToClean = Array.from(node.querySelectorAll<HTMLElement>("*"));
       elementsToClean.push(node);
 
@@ -97,45 +91,63 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
         const hasBadCSS = 
           computed.filter !== 'none' ||
           computed.mixBlendMode !== 'normal' ||
-          computed.backdropFilter !== 'none';
+          computed.backdropFilter !== 'none' ||
+          computed.maskImage !== 'none' ||
+          computed.clipPath !== 'none';
 
         if (hasBadCSS) {
           originalStyles.set(el, el.getAttribute("style"));
           elementsCleaned.push(el);
           el.style.setProperty("filter", "none", "important");
-          el.style.setProperty("mix-blend-mode", "normal", "important");
           el.style.setProperty("backdrop-filter", "none", "important");
         }
       });
 
-      // Wait a tick for styles to apply
-      await new Promise(r => setTimeout(r, 50));
+      await new Promise(r => setTimeout(r, 60));
 
       let dataUrl = "";
-      const options = {
-        pixelRatio: 4,
-        cacheBust: true,
-        backgroundColor: "#050807",
-        skipAutoScale: false
-      };
 
+      // Prioritize html2canvas as it reliably draws DOM elements on mobile WebKit without foreignObject issues
       try {
-        dataUrl = await toPng(node, options);
-      } catch (err) {
-        console.warn("html-to-image failed, falling back to html2canvas...", err);
-        const canvas = await html2canvas(node, { scale: 4, backgroundColor: "#050807", useCORS: true } as any);
+        const rect = node.getBoundingClientRect();
+        const canvas = await html2canvas(node, { 
+          scale: 3, 
+          backgroundColor: "#050807", 
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          x: 0,
+          y: 0,
+          width: rect.width,
+          height: rect.height,
+          windowWidth: document.documentElement.offsetWidth,
+          windowHeight: document.documentElement.offsetHeight,
+        } as any);
         dataUrl = canvas.toDataURL("image/png");
+      } catch (err) {
+        console.warn("html2canvas failed, falling back to html-to-image...", err);
+        dataUrl = await toPng(node, {
+          pixelRatio: 3,
+          cacheBust: false,
+          backgroundColor: "#050807",
+          skipAutoScale: false
+        });
       }
 
       console.groupEnd();
       return dataUrl;
     } catch (error: any) {
       console.error(error);
-      console.trace();
-      console.log(activeTab === "frame" ? frameRef.current : cardRef.current);
       console.groupEnd();
       throw error;
     } finally {
+      // Restore original image sources
+      originalSrcs.forEach((origSrc, img) => {
+        img.src = origSrc;
+      });
+
       // Restore CSS
       elementsCleaned.forEach(el => {
         const orig = originalStyles.get(el);
@@ -326,7 +338,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
               className="col-start-1 row-start-1 w-full flex justify-center"
             >
               {/* The BuilderCard is natively responsive, so we let it flow naturally */}
-              <div className="w-[calc(100vw-32px)] sm:w-full sm:max-w-[1000px] flex justify-center px-0 sm:px-0 box-border overflow-x-hidden sm:overflow-visible">
+              <div className="w-full sm:max-w-[1000px] flex justify-center px-4 sm:px-0 box-border overflow-x-hidden sm:overflow-visible">
                 <BuilderCard ref={cardRef} userData={userData} />
               </div>
             </motion.div>

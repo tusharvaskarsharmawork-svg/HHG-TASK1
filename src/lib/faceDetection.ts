@@ -18,7 +18,24 @@ export interface FaceCropResult {
   width: number;
   height: number;
   originalImage: HTMLImageElement;
+  croppedImageUrl: string;
 }
+
+const createCroppedUrl = (img: HTMLImageElement, cropX: number, cropY: number, cropSize: number): string => {
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = 400;
+    canvas.height = 400;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, 400, 400);
+      return canvas.toDataURL("image/jpeg", 0.92);
+    }
+  } catch (e) {
+    console.error("Failed to crop canvas:", e);
+  }
+  return img.src;
+};
 
 export async function detectFace(imageUrl: string): Promise<FaceCropResult | null> {
   await loadFaceDetectionModels();
@@ -68,7 +85,8 @@ export async function detectFace(imageUrl: string): Promise<FaceCropResult | nul
           y,
           width: finalSize,
           height: finalSize,
-          originalImage: img
+          originalImage: img,
+          croppedImageUrl: createCroppedUrl(img, x, y, finalSize)
         });
       } else {
         // Fallback: If no face detected, crop from center (square)
@@ -80,7 +98,8 @@ export async function detectFace(imageUrl: string): Promise<FaceCropResult | nul
           y,
           width: size,
           height: size,
-          originalImage: img
+          originalImage: img,
+          croppedImageUrl: createCroppedUrl(img, x, y, size)
         });
       }
     };
