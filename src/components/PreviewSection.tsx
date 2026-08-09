@@ -94,12 +94,10 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
       elementsToClean.forEach(el => {
         const computed = window.getComputedStyle(el);
-        const hasBadCSS =
+        const hasBadCSS = 
           computed.filter !== 'none' ||
           computed.mixBlendMode !== 'normal' ||
-          computed.backdropFilter !== 'none' ||
-          computed.maskImage !== 'none' ||
-          computed.clipPath !== 'none';
+          computed.backdropFilter !== 'none';
 
         if (hasBadCSS) {
           originalStyles.set(el, el.getAttribute("style"));
@@ -107,9 +105,6 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
           el.style.setProperty("filter", "none", "important");
           el.style.setProperty("mix-blend-mode", "normal", "important");
           el.style.setProperty("backdrop-filter", "none", "important");
-          el.style.setProperty("mask-image", "none", "important");
-          el.style.setProperty("-webkit-mask-image", "none", "important");
-          el.style.setProperty("clip-path", "none", "important");
         }
       });
 
