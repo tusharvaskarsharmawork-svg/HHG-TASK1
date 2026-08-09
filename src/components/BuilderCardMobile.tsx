@@ -53,7 +53,7 @@ export const BuilderCardMobile = React.forwardRef<HTMLDivElement, BuilderCardPro
             <img 
               src="/bg.png"
               alt="Background"
-              className="absolute top-0 left-0 w-full h-full"
+              className="absolute top-0 left-0 w-full h-full object-cover object-bottom opacity-45"
             />
             {/* Subtle overlay to ensure text readability */}
             <div className="absolute inset-0 bg-black/10" />

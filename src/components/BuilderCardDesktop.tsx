@@ -45,7 +45,7 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, rotate: 0.5 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 20 }}
-        className="relative flex flex-row w-full max-w-[960px] box-border bg-[#050807] rounded-[36px] overflow-hidden overflow-x-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 aspect-[21/9]"
+        className="relative flex flex-row w-full max-w-[960px] box-border bg-[#050807] rounded-[36px] overflow-hidden overflow-x-hidden text-white group shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9),0_0_50px_rgba(0,214,180,0.05),inset_0_0_40px_rgba(0,0,0,0.6)] border border-[#FFD31A]/30 hover:shadow-[0_25px_80px_-15px_rgba(0,214,180,0.2),inset_0_0_40px_rgba(0,0,0,0.6)] hover:border-[#FFD31A]/50 aspect-[23/9]"
       >
         {/* CINEMATIC LAYERED BACKGROUND */}
         <motion.div
@@ -54,8 +54,19 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="absolute inset-0 pointer-events-none overflow-hidden z-0"
         >
+          {/* Custom Desktop Background Image with 40% opacity (aligned to bottom to show beach/van doodles) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/desktop-bg.jpg"
+            alt="Desktop Background"
+            className="absolute inset-0 w-full h-full object-cover object-bottom opacity-40"
+          />
+
+          {/* Subtle dark overlay for contrast */}
+          <div className="absolute inset-0 bg-black/30" />
+
           {/* Layer 2: Large radial emerald gradient (right bias) */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[70%] h-[150%] bg-[radial-gradient(ellipse_at_70%_50%,#0B3E36_0%,transparent_60%)] opacity-90" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[70%] h-[150%] bg-[radial-gradient(ellipse_at_70%_50%,#0B3E36_0%,transparent_60%)] opacity-60" />
 
           {/* Layer 3: Soft sea-green glow behind QR & Title */}
           <div className="absolute right-12 top-1/2 -translate-y-1/2 w-72 h-72 bg-[#00D6B4] rounded-full blur-[100px] opacity-[0.1]" />
@@ -86,9 +97,9 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
         </motion.div>
 
         {/* LEFT SIDE (Main Identity) */}
-        <div className="relative flex-1 p-5 pr-6 flex flex-col z-10 pb-10 overflow-hidden">
+        <div className="relative flex-1 p-4 sm:p-5 pr-6 flex flex-col z-10 pb-10 overflow-hidden">
 
-          <div className="flex flex-row gap-5 items-start">
+          <div className="flex flex-row gap-4 items-start">
             {/* Profile Photo */}
             <div className="relative flex-shrink-0">
               <div className="relative w-[130px] h-[140px] rounded-3xl overflow-hidden border border-[#FFD31A]/40 shadow-[0_0_30px_rgba(0,0,0,0.8)] bg-[#050807]">
@@ -107,10 +118,10 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
             <div className="flex flex-col flex-1 min-w-0 w-full pt-1">
               <span className="text-[10px] uppercase font-mono tracking-[0.3em] text-[#00D6B4]/80 mb-1">Builder</span>
 
-              <h2 className="text-4xl lg:text-[46px] tracking-tight text-[#FFF7EA] whitespace-normal break-words font-serif mb-1 leading-[1.1]">{name}</h2>
+              <h2 className="text-3xl lg:text-[38px] tracking-tight text-[#FFF7EA] whitespace-normal break-words font-serif mb-0.5 leading-[1.1]">{name}</h2>
 
               {teamName && (
-                <div className="text-xl text-[#FFD31A] font-medium whitespace-normal break-words mb-1 font-sans tracking-wide">
+                <div className="text-lg text-[#FFD31A] font-medium whitespace-normal break-words mb-0.5 font-sans tracking-wide">
                   {teamName}
                 </div>
               )}
@@ -129,26 +140,26 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
 
           {/* Tags */}
           {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-1.5 mt-2.5">
               {tags.map(tag => (
-                <div key={tag} className="px-3 py-1 rounded-full border border-[#00D6B4]/30 bg-transparent">
-                  <span className="text-xs font-mono text-[#00D6B4] font-medium tracking-wide">#{tag}</span>
+                <div key={tag} className="px-2.5 py-0.5 rounded-full border border-[#00D6B4]/30 bg-transparent">
+                  <span className="text-[11px] font-mono text-[#00D6B4] font-medium tracking-wide">#{tag}</span>
                 </div>
               ))}
             </div>
           )}
 
           {/* Micro Metadata & Graphics */}
-          <div className="mt-auto pt-5 flex flex-row items-end justify-between gap-5 z-10 w-full">
+          <div className="mt-auto pt-2 mb-5 flex flex-row items-end justify-between gap-5 z-10 w-full">
             <div className="flex items-end justify-between w-auto gap-5">
               {/* Coordinates */}
-              <div className="flex flex-col gap-1.5 z-10 flex-shrink-0">
-                <span className="text-[9px] uppercase font-mono tracking-[0.2em] text-white/40 mb-1">Coordinates</span>
+              <div className="flex flex-col gap-1 z-10 flex-shrink-0">
+                <span className="text-[9px] uppercase font-mono tracking-[0.2em] text-[#00D6B4] font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]">Coordinates</span>
                 <div className="flex items-center gap-6">
-                  <span className="text-xs font-mono text-white/70 tracking-widest">15.2993° N  •  74.1240° E</span>
+                  <span className="text-xs font-mono text-white font-medium tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]">15.2993° N  •  74.1240° E</span>
                 </div>
-                <span className="text-[10px] font-mono text-white/50 tracking-widest mt-1">
-                  Issued {issueDate}  •  No. {Math.random().toString(16).slice(2, 9).toUpperCase()}
+                <span className="text-[10px] font-mono text-white/80 tracking-widest mt-0.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)]">
+                  Issued {issueDate}  •  No. {serial}
                 </span>
               </div>
 
@@ -166,22 +177,22 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
         </div>
 
         {/* Hacker House Goa Circular Logo Badge (Upper Right above Palm Tree on Desktop) */}
-        <div className="flex absolute right-[260px] md:right-[275px] lg:right-[290px] top-4 z-[50] pointer-events-none select-none">
+        <div className="flex absolute right-[260px] md:right-[275px] lg:right-[290px] top-3.5 z-[50] pointer-events-none select-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hh-goa-circle-logo.png"
             alt="Hacker House Goa Circular Logo"
-            className="w-auto h-16 md:h-20 lg:h-24 max-w-[140px] md:max-w-[170px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
+            className="w-auto h-11 md:h-13 lg:h-15 max-w-[95px] md:max-w-[115px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
           />
         </div>
 
-        {/* Middle Space Illustration (Palm Tree & Laptop) - Desktop Only */}
-        <div className="flex absolute right-[235px] md:right-[250px] lg:right-[260px] bottom-[28px] z-[15] pointer-events-none select-none">
+        {/* Middle Space Illustration (Goa Beach Artwork) - Desktop Only */}
+        <div className="flex absolute right-[225px] md:right-[240px] lg:right-[250px] bottom-[26px] md:bottom-[32px] z-[15] pointer-events-none select-none items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/palm-laptop-clean.png"
-            alt="Palm tree and laptop illustration"
-            className="h-auto w-auto max-h-[250px] md:max-h-[275px] lg:max-h-[295px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] opacity-95 transition-transform duration-300 hover:scale-105 origin-bottom"
+            src="/goa-beach-art.png"
+            alt="Goa Beach Illustration"
+            className="h-auto w-auto max-h-[235px] md:max-h-[260px] lg:max-h-[285px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] mix-blend-screen opacity-80 transition-transform duration-300 hover:scale-105"
           />
         </div>
 
@@ -196,12 +207,12 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
         </div>
 
         {/* RIGHT SIDE (QR & Verification) */}
-        <div className="relative w-[260px] p-5 pb-6 flex flex-col items-center text-center z-10 bg-transparent">
+        <div className="relative w-[240px] p-4 pb-5 flex flex-col items-center text-center z-10 bg-transparent">
 
           {/* Event Branding */}
-          <div className="flex flex-col items-center mb-3">
-            <span className="font-serif text-3xl text-[#FFF7EA] tracking-wide mb-1">HH GOA 2026</span>
-            <span className="text-[10px] text-[#FFD31A] uppercase tracking-[0.3em] font-mono">Builder Pass</span>
+          <div className="flex flex-col items-center mb-2">
+            <span className="font-serif text-2xl text-[#FFF7EA] tracking-wide mb-0.5">HH GOA 2026</span>
+            <span className="text-[9px] text-[#FFD31A] uppercase tracking-[0.3em] font-mono">Builder Pass</span>
           </div>
 
           <div className="flex flex-col items-center justify-center w-full mt-0">
@@ -210,11 +221,11 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="p-3 bg-[#FFF7EA] rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-4 border border-[#FFD31A]/30 flex items-center justify-center flex-shrink-0"
+              className="p-2 bg-[#FFF7EA] rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-2 border border-[#FFD31A]/30 flex items-center justify-center flex-shrink-0"
             >
               <QRCodeSVG
                 value={`${origin}/pass/${builderId}`}
-                className="w-[110px] h-[110px]"
+                className="w-[95px] h-[95px]"
                 bgColor="#FFF7EA"
                 fgColor="#050807"
                 level="Q"
