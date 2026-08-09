@@ -15,6 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Frame In Goa | Hacker House Goa 2026",
   description: "Create your official Hacker House Goa profile frame and builder card in seconds.",
+  icons: {
+    icon: "/HHGOA-LOGO.png",
+  },
   openGraph: {
     title: "Frame In Goa | Hacker House Goa 2026",
     description: "Create your official Hacker House Goa profile frame and builder card in seconds.",
