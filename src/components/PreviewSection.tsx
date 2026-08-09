@@ -205,7 +205,11 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
           });
         } catch (shareErr: any) {
           if (shareErr.name !== "AbortError") {
-            console.error("Native share failed:", shareErr);
+            if (shareErr.name === "NotAllowedError") {
+              console.warn("Native share blocked (likely user gesture expired). Falling back to download.");
+            } else {
+              console.warn("Native share failed:", shareErr);
+            }
             // Fallback to download if share is blocked (e.g. user gesture expired)
             const link = document.createElement("a");
             link.download = fileName;
