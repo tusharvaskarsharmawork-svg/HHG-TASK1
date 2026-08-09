@@ -27,7 +27,7 @@ export default function Home() {
                   alt="Hacker House Goa"
                   width={500}
                   height={500}
-                  className="w-full max-w-[350px] sm:max-w-[450px] h-auto object-contain drop-shadow-2xl"
+                  className="w-full max-w-[260px] sm:max-w-[340px] h-auto object-contain drop-shadow-2xl"
                   priority
                 />
               </div>

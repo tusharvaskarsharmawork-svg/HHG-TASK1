@@ -30,7 +30,7 @@ type TabId = typeof TABS[number]["id"];
 export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  
+
   const [activeTab, setActiveTab] = useState<TabId>("frame");
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
@@ -38,13 +38,13 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
   const generateImage = useCallback(async (): Promise<string> => {
     let originalStyles = new Map<HTMLElement, string | null>();
     let elementsCleaned: HTMLElement[] = [];
-    
+
     // STEP 8 - EXPORT ONLY AFTER RENDER
     await new Promise(resolve => setTimeout(resolve, 50));
 
     try {
       console.group("Builder Pass Export");
-      
+
       // STEP 9 - DEBUGGING
       console.log("activeTab:", activeTab);
       console.log("frameRef.current:", frameRef.current);
@@ -94,7 +94,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
 
       elementsToClean.forEach(el => {
         const computed = window.getComputedStyle(el);
-        const hasBadCSS = 
+        const hasBadCSS =
           computed.filter !== 'none' ||
           computed.mixBlendMode !== 'normal' ||
           computed.backdropFilter !== 'none' ||
@@ -102,14 +102,14 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
           computed.clipPath !== 'none';
 
         if (hasBadCSS) {
-           originalStyles.set(el, el.getAttribute("style"));
-           elementsCleaned.push(el);
-           el.style.setProperty("filter", "none", "important");
-           el.style.setProperty("mix-blend-mode", "normal", "important");
-           el.style.setProperty("backdrop-filter", "none", "important");
-           el.style.setProperty("mask-image", "none", "important");
-           el.style.setProperty("-webkit-mask-image", "none", "important");
-           el.style.setProperty("clip-path", "none", "important");
+          originalStyles.set(el, el.getAttribute("style"));
+          elementsCleaned.push(el);
+          el.style.setProperty("filter", "none", "important");
+          el.style.setProperty("mix-blend-mode", "normal", "important");
+          el.style.setProperty("backdrop-filter", "none", "important");
+          el.style.setProperty("mask-image", "none", "important");
+          el.style.setProperty("-webkit-mask-image", "none", "important");
+          el.style.setProperty("clip-path", "none", "important");
         }
       });
 
@@ -163,7 +163,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       link.click();
     } catch (error: any) {
       toast({
-        title:"Export Failed",
+        title: "Export Failed",
         description: error.message || String(error)
       });
     } finally {
@@ -172,45 +172,68 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
   }, [activeTab, generateImage]);
 
   const handleShare = async () => {
+    const text = `Hacker House Goa 2026 🌴\nI’m ready for HH Goa 2026!\n\n#HHGoa #HackerHouseGoa #HHGOA2026 #Goa #Hackathon #Builders #FrameInGoa`;
+    const xIntentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+
+    // 1 & 2: Immediately open X intent to bypass popup blockers
+    window.open(xIntentUrl, "_blank", "noopener,noreferrer");
+
     setIsSharing(true);
     try {
+      // 3: Generate image in background
       const dataUrl = await generateImage();
-      const fileName = `HH_Goa_2026_${activeTab === "frame" ? "Frame" : "BuilderCard"}.png`;
+      const fileName = "HH-Goa-2026-Builder-Pass.png";
 
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      const file = new File([blob], fileName, { type: 'image/png' });
+      let useNativeShare = false;
+      let file: File | null = null;
 
-      const text = `I'm officially joining Hacker House Goa 2026 🚀\n\nHere's my Builder Pass.\n\n#FrameInGoa #HHGoa2026`;
+      if (navigator.canShare) {
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        file = new File([blob], fileName, { type: "image/png" });
+        if (navigator.canShare({ files: [file] })) {
+          useNativeShare = true;
+        }
+      }
 
-      const shareData = {
-        title: 'HH Goa Builder Pass',
-        text: text,
-        files: [file]
-      };
+      // 4: Provide secondary share/download action
+      if (useNativeShare && file) {
+        try {
+          await navigator.share({
+            title: "Hacker House Goa 2026",
+            files: [file]
+          });
+        } catch (shareErr: any) {
+          if (shareErr.name !== "AbortError") {
+            console.error("Native share failed:", shareErr);
+            // Fallback to download if share is blocked (e.g. user gesture expired)
+            const link = document.createElement("a");
+            link.download = fileName;
+            link.href = dataUrl;
+            link.click();
 
-      if (navigator.canShare && navigator.canShare(shareData)) {
-        await navigator.share(shareData);
+            toast({
+              title: "Image Downloaded",
+              description: "Your Builder Pass has been downloaded. Switch to the X tab and attach it to your post!"
+            });
+          }
+        }
       } else {
-        // Desktop Fallback
         const link = document.createElement("a");
         link.download = fileName;
         link.href = dataUrl;
         link.click();
 
-        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-        window.open(url, "_blank");
-
         toast({
           title: "Image Downloaded",
-          description: "Your Builder Pass has been downloaded. Attach the downloaded image to your X post before publishing."
+          description: "Your Builder Pass has been downloaded. Switch to the X tab and attach it to your post!"
         });
       }
     } catch (error: any) {
-      console.error(error);
+      console.error("Image generation failed:", error);
       toast({
-        title: "Share Failed",
-        description: "Unable to generate your Builder Pass. Please try again."
+        title: "Export Failed",
+        description: "Unable to automatically generate your Builder Pass image."
       });
     } finally {
       setIsSharing(false);
@@ -234,8 +257,8 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
       className="w-full flex flex-col items-center gap-2 sm:gap-3 pb-4"
     >
       {/* PREMIUM SEGMENTED CONTROL */}
-      <div 
-        role="tablist" 
+      <div
+        role="tablist"
         aria-label="Preview selection"
         onKeyDown={handleKeyDown}
         className="relative flex items-center p-1.5 mt-2 mb-1 sm:mt-0 rounded-full bg-[#050807]/80 border border-[#FFD31A]/30 backdrop-blur-xl shadow-2xl z-[50] w-full sm:w-[fit-content] sm:min-w-[380px]"
@@ -253,11 +276,10 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
                 console.log(tab.id);
                 setActiveTab(tab.id);
               }}
-              className={`relative z-[20] flex-1 py-2 text-sm font-bold rounded-full outline-none transition-all duration-300 cursor-pointer pointer-events-auto ${
-                isActive 
-                  ? "text-black drop-shadow-sm" 
+              className={`relative z-[20] flex-1 py-2 text-sm font-bold rounded-full outline-none transition-all duration-300 cursor-pointer pointer-events-auto ${isActive
+                  ? "text-black drop-shadow-sm"
                   : "text-white/70 hover:text-white hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#FFD31A]/50"
-              }`}
+                }`}
             >
               {isActive && (
                 <motion.div
@@ -290,7 +312,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
             >
               {/* Native responsive container */}
               <div className="w-full max-w-[380px] sm:max-w-[512px] flex justify-center">
-                 <ProfileFrame ref={frameRef} cropResult={userData.cropResult} />
+                <ProfileFrame ref={frameRef} cropResult={userData.cropResult} />
               </div>
             </motion.div>
           )}
@@ -306,7 +328,7 @@ export function PreviewSection({ userData, onReset }: PreviewSectionProps) {
             >
               {/* The BuilderCard is natively responsive, so we let it flow naturally */}
               <div className="w-[calc(100vw-32px)] sm:w-full sm:max-w-[1000px] flex justify-center px-0 sm:px-0 box-border overflow-x-hidden sm:overflow-visible">
-                 <BuilderCard ref={cardRef} userData={userData} />
+                <BuilderCard ref={cardRef} userData={userData} />
               </div>
             </motion.div>
           )}
