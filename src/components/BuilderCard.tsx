@@ -163,33 +163,31 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
               </div>
 
               {/* #FrameInGoa Stamp Tag */}
-              <div className="flex items-center select-none pointer-events-none z-20 pb-0.5 opacity-65 transition-opacity duration-300 hover:opacity-90">
+              <div className="absolute top-[85px] right-3 sm:static flex items-center select-none pointer-events-none z-[45] pb-0.5 opacity-85 transition-opacity duration-300 hover:opacity-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/frame-in-goa-stamp.png"
                   alt="#FrameInGoa Stamp"
-                  className="w-auto h-11 sm:h-14 md:h-16 lg:h-18 max-w-[150px] sm:max-w-[190px] md:max-w-[220px] object-contain drop-shadow-[0_4px_14px_rgba(255,211,26,0.3)] -rotate-3"
+                  className="w-auto h-14 sm:h-14 md:h-16 lg:h-18 max-w-[170px] sm:max-w-[190px] md:max-w-[220px] object-contain drop-shadow-[0_4px_14px_rgba(255,211,26,0.3)] -rotate-[6deg] sm:-rotate-3"
                 />
               </div>
             </div>
 
             {/* MOBILE ONLY: Middle Graphics injected here after stamp */}
-            <div className="flex sm:hidden w-full items-center justify-between mt-6 mb-4 z-20">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/hh-goa-circle-logo.png" alt="Hacker House Goa Circular Logo" className="w-[60px] h-[60px] object-contain drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95" />
+            <div className="flex sm:hidden w-full items-center justify-end mt-6 mb-4 z-20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/palm-laptop-clean.png" alt="Palm tree and laptop illustration" className="w-[180px] max-w-[65%] h-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.85)] opacity-95 origin-bottom" />
             </div>
           </div>
         </div>
 
-        {/* Hacker House Goa Circular Logo Badge (Upper Right above Palm Tree) - Desktop Only */}
-        <div className="hidden sm:flex absolute right-4 sm:right-[260px] md:right-[275px] lg:right-[290px] top-3 sm:top-4 z-[25] pointer-events-none select-none">
+        {/* Hacker House Goa Circular Logo Badge (Top Right on Mobile, Upper Right above Palm Tree on Desktop) */}
+        <div className="flex absolute right-4 sm:right-[260px] md:right-[275px] lg:right-[290px] top-4 sm:top-4 z-[50] pointer-events-none select-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hh-goa-circle-logo.png"
             alt="Hacker House Goa Circular Logo"
-            className="w-auto h-12 sm:h-16 md:h-20 lg:h-24 max-w-[100px] sm:max-w-[140px] md:max-w-[170px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
+            className="w-auto h-[75px] sm:h-16 md:h-20 lg:h-24 max-w-[100px] sm:max-w-[140px] md:max-w-[170px] object-contain drop-shadow-[0_0_20px_rgba(0,214,180,0.6)] drop-shadow-[0_0_10px_rgba(255,211,26,0.4)] opacity-95 transition-transform duration-300 hover:scale-105"
           />
         </div>
 
@@ -222,32 +220,39 @@ export const BuilderCard = React.forwardRef<HTMLDivElement, BuilderCardProps>(
             <span className="text-[9px] sm:text-[10px] text-[#FFD31A] uppercase tracking-[0.3em] font-mono">Builder Pass</span>
           </div>
 
-          {/* QR Code */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="p-3 sm:p-3 bg-[#FFF7EA] rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-3 sm:mb-4 border border-[#FFD31A]/30 flex items-center justify-center"
-          >
-            <QRCodeSVG
-              value={`${origin}/pass/${builderId}`}
-              className="w-[160px] h-[160px] sm:w-[110px] sm:h-[110px]"
-              bgColor="#FFF7EA"
-              fgColor="#050807"
-              level="Q"
-              includeMargin={false}
-            />
-          </motion.div>
+          <div className="flex flex-row sm:flex-col items-center justify-center gap-5 sm:gap-0 w-full mt-1 sm:mt-0">
+            {/* QR Code */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="p-2 sm:p-3 bg-[#FFF7EA] rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-0 sm:mb-4 border border-[#FFD31A]/30 flex items-center justify-center flex-shrink-0"
+            >
+              <QRCodeSVG
+                value={`${origin}/pass/${builderId}`}
+                className="w-[90px] h-[90px] sm:w-[110px] sm:h-[110px]"
+                bgColor="#FFF7EA"
+                fgColor="#050807"
+                level="Q"
+                includeMargin={false}
+              />
+            </motion.div>
 
-          <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-widest text-white/40 mb-3 sm:mb-4">Scan to Verify Builder</span>
+            {/* Verification Content */}
+            <div className="flex flex-col items-start sm:items-center text-left sm:text-center justify-center flex-1 min-w-0">
+              <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-widest text-white/40 mb-2 sm:mb-4 leading-relaxed">
+                Scan to Verify<br className="sm:hidden" /><span className="hidden sm:inline"> </span>Builder
+              </span>
 
-          {/* Builder ID & Status */}
-          <div className="w-full flex flex-col items-center gap-1 sm:gap-1.5 mt-auto">
-            <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.2em] text-white/30">Builder ID</span>
-            <span className="font-mono text-lg sm:text-xl text-[#00D6B4] font-bold tracking-wider">{serial}</span>
-            <div className="flex items-center gap-2 mt-0.5 sm:mt-1 px-3 py-1 sm:px-4 sm:py-1.5 bg-[#00D6B4]/10 rounded-full border border-[#00D6B4]/30">
-              <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00D6B4]" />
-              <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-[#00D6B4] uppercase">Access Granted</span>
+              {/* Builder ID & Status */}
+              <div className="w-full flex flex-col items-start sm:items-center gap-1 sm:gap-1.5 mt-0 sm:mt-auto">
+                <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.2em] text-white/30">Builder ID</span>
+                <span className="font-mono text-sm sm:text-xl text-[#00D6B4] font-bold tracking-wider truncate w-full sm:w-auto">{serial}</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5 sm:mt-1 px-2.5 py-1 sm:px-4 sm:py-1.5 bg-[#00D6B4]/10 rounded-full border border-[#00D6B4]/30 w-fit">
+                  <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00D6B4] flex-shrink-0" />
+                  <span className="text-[8px] sm:text-[10px] font-mono tracking-widest text-[#00D6B4] uppercase whitespace-nowrap">Access Granted</span>
+                </div>
+              </div>
             </div>
           </div>
 
