@@ -111,7 +111,6 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
                 />
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] pointer-events-none" />
               </div>
-
             </div>
 
             {/* Builder Details */}
