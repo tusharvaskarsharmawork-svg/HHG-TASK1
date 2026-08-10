@@ -142,7 +142,7 @@ export const BuilderCardMobile = React.forwardRef<HTMLDivElement, BuilderCardPro
             className="p-1.5 bg-[#FFF7EA] rounded-xl shadow-xl border border-[#FFD31A]/30 flex-shrink-0"
           >
             <QRCodeSVG
-              value={`${origin}/pass/${builderId}`}
+              value="https://hhgoa.com/"
               className="w-[70px] h-[70px]"
               bgColor="#FFF7EA"
               fgColor="#050807"

@@ -223,7 +223,7 @@ export const BuilderCardDesktop = React.forwardRef<HTMLDivElement, BuilderCardPr
               className="p-2 bg-[#FFF7EA] rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 mb-2 border border-[#FFD31A]/30 flex items-center justify-center flex-shrink-0"
             >
               <QRCodeSVG
-                value={`${origin}/pass/${builderId}`}
+                value="https://hhgoa.com/"
                 className="w-[95px] h-[95px]"
                 bgColor="#FFF7EA"
                 fgColor="#050807"
