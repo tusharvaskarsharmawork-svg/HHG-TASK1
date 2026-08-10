@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { motion, AnimatePresence } from "framer-motion";
 import { UploadCloud, Loader2, Plus, X, ArrowRight, Camera, Check } from "lucide-react";
@@ -45,6 +45,7 @@ const PRESET_MOODS = [
 export function UploadSection({ onUploadComplete }: UploadSectionProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState("");
   const [teamName, setTeamName] = useState("");
@@ -203,10 +204,28 @@ export function UploadSection({ onUploadComplete }: UploadSectionProps) {
                     <span className="text-xs font-medium">{file ? "Change photo" : "Upload photo"}</span>
                   </div>
 
-                  <button className="flex items-center justify-center gap-2 py-3 rounded-lg border border-muted-foreground/30 text-foreground bg-transparent hover:border-primary/50 transition-all">
+                  <button 
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center justify-center gap-2 py-3 rounded-lg border border-muted-foreground/30 text-foreground bg-transparent hover:border-primary/50 transition-all"
+                  >
                     <Camera className="w-4 h-4 text-primary" />
                     <span className="text-xs font-medium">Take photo</span>
                   </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="user"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={(e) => {
+                      const selected = e.target.files?.[0];
+                      if (selected) setFile(selected);
+                      // Reset the input value so the same file can be selected again if needed
+                      if (e.target) e.target.value = '';
+                    }}
+                    style={{ display: 'none' }}
+                  />
                 </div>
                 {file && <span className="text-xs text-primary/80 truncate">Selected: {file.name}</span>}
                 {attemptedSubmit && !file && <span className="text-[11px] text-red-500 mt-1">• Please upload your photo.</span>}
